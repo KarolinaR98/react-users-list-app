@@ -47,7 +47,7 @@ const UsersList = () => {
            setDisplayedUsers(filteredArray);
         }
         else if(filterValue === "All"){
-            setDisplayedUsers(users.map(user => ({...user})));
+            setDisplayedUsers(users);
         }
     }
 
