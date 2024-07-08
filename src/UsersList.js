@@ -1,5 +1,5 @@
 import './UsersList.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 const UsersList = () => {
@@ -11,6 +11,8 @@ const UsersList = () => {
     });
 
     const [users, setUsers] = useState([]);
+    const [displayedUsers, setDisplayedUsers] = useState([]);
+    const [filterSelected, setFilterSelected] = useState("All");
 
     const handleInputChange = (e) => {
         const target = e.target;
@@ -24,13 +26,35 @@ const UsersList = () => {
 
     const setUser = (e) => {
         e.preventDefault();
-        setUsers(users.concat({ ...formData, id: Date.now() }))
+        setUsers(users.concat({ ...formData, id: Date.now() }));
     }
 
     const removeUser = (id) => {
         const filteredUsers = users.filter(user=>user.id !== id);
         setUsers(filteredUsers);
     }
+
+    
+    const filterBy = (filterValue) => {
+
+        if(filterValue === "Admin"){
+           const filteredArray = users.filter(user=>user.usertype === "Admin");
+           setDisplayedUsers(filteredArray);
+           
+        }
+        else if(filterValue === "User"){
+            const filteredArray = users.filter(user=>user.usertype === "User");
+           setDisplayedUsers(filteredArray);
+        }
+        else if(filterValue === "All"){
+            setDisplayedUsers(users.map(user => ({...user})));
+        }
+    }
+
+    useEffect(()=>{
+        setDisplayedUsers(users);
+        filterBy(filterSelected);
+    }, [users, filterSelected])
 
     return (
         <div className="usersList">
@@ -47,7 +71,13 @@ const UsersList = () => {
                 <button>Save</button>
             </form>
             <div className="list">
-                {users.map(user => {
+                <div className='filterButtons'>
+                    <span>Filter By: </span>
+                    <button onClick={()=>setFilterSelected("Admin")}>Admins only</button>
+                    <button onClick={()=>setFilterSelected("User")}>Users only</button>
+                    <button onClick={()=>setFilterSelected("All")}>All</button>
+                </div>
+                {displayedUsers.map(user => {
                     return (<div className='userItem' key={user.id} onClick={()=>{removeUser(user.id)}}>
                         <p>{user.username}</p>
                         <p>{user.email}</p>

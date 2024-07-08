@@ -12,7 +12,8 @@
 }
 
 
-.usersList form button{
+.usersList form button,
+.list .filterButtons button{
     background-color: lightblue;
     padding: 5px 15px;
     margin-top: 15px;
@@ -21,8 +22,19 @@
     cursor: pointer;
 }
 
-.usersList form button:hover{
+.usersList form button:hover,
+.list .filterButtons button:hover{
     opacity: .8;
+}
+
+.list .filterButtons button,
+.list .filterButtons span{
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.list .filterButtons{
+    margin-bottom: 10px;
 }
 
 .usersList .list{
